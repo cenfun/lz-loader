@@ -1,30 +1,29 @@
 const path = require("path");
 const loaderUtils = require("loader-utils");
-
 const LzString = require("./runtime/api.js");
 
-const loaderApi = (source) => {
-  
-};
+const loaderApi = function(source) {
 
-loaderApi.pitch = function(remainingRequest) {
-
-    const apiPath = loaderUtils.stringifyRequest(this, path.resolve(__dirname, "runtime/api.js"));
-
-    const filePath = loaderUtils.stringifyRequest(this, `!!${remainingRequest}`);
-
+    const apiPath = loaderUtils.stringifyRequest(this, require.resolve("./runtime/api.js"));
     console.log(apiPath);
-    console.log(filePath, remainingRequest);
 
-    //const lzStr = LzString.compressToBase64(JSON.stringify(reportData));
+    const ext = path.extname(this.resourcePath);
+    const isJson = ext === ".json";
 
-    const lzStr = "";
+    const lzStr = LzString.compressToBase64(`${source}`);
 
-    return `
-        const LzString = require(${apiPath});
-        module.exports = JSON.parse(LzString.decompressFromBase64(${lzStr}));
-        `;
-    
+    let out = `const LzString = require(${apiPath});\n`;
+    out += `const source = "${lzStr}";\n`;
+    out += "let result = LzString.decompressFromBase64(source);\n";
+    if (isJson) {
+        out += "result = JSON.parse(result);\n";
+    }
+    out += "module.exports = result;";
+
+    //console.log(out);
+
+    //return `const LzString = require(${apiPath});\nmodule.exports = "${source.replace(/\r|\n/g, "")}";`;
+    return out;
 };
 
 module.exports = loaderApi;

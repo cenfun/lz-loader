@@ -1,8 +1,10 @@
-require("./global.scss");
-require("./style.scss");
+//const data = require("./data.json");
+const text = require("./text.txt");
 
 const component = {
-    name: "component"
+    name: "component",
+    //data: data,
+    text: text
 };
 
 module.exports = component;
