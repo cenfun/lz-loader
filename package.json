@@ -1,0 +1,21 @@
+{
+  "name": "lz-string-loader",
+  "version": "1.0.0",
+  "description": "",
+  "main": "dist/cjs.js",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/cenfun/lz-string-loader.git"
+  },
+  "files": [
+    "lib"
+  ],
+  "scripts": {},
+  "dependencies": {
+    "loader-utils": "^2.0.0",
+    "schema-utils": "^3.0.0"
+  },
+  "devDependencies": {
+    "eslint": "^7.22.0"
+  }
+}
