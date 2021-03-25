@@ -5,7 +5,7 @@ const LzString = require("./runtime/api.js");
 const loaderApi = function(source) {
 
     const apiPath = loaderUtils.stringifyRequest(this, require.resolve("./runtime/api.js"));
-    console.log(apiPath);
+    //console.log(apiPath);
 
     const ext = path.extname(this.resourcePath);
     const isJson = ext === ".json";
@@ -22,7 +22,6 @@ const loaderApi = function(source) {
 
     //console.log(out);
 
-    //return `const LzString = require(${apiPath});\nmodule.exports = "${source.replace(/\r|\n/g, "")}";`;
     return out;
 };
 

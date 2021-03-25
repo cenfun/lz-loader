@@ -1,9 +1,9 @@
-//const data = require("./data.json");
+const data = require("./data.json");
 const text = require("./text.txt");
 
 const component = {
     name: "component",
-    //data: data,
+    data: data,
     text: text
 };
 
