@@ -21,8 +21,13 @@ module.exports = {
         rules: [{
             test: /\.(json|txt)$/,
             type: "javascript/auto",
-            //loader: "lz-string-loader"
-            loader: path.resolve(__dirname, "../")
+            use: {
+                //loader: "lz-string-loader"
+                loader: path.resolve(__dirname, "../"),
+                options: {
+                    esModule: false
+                }
+            }
         }]
     }
 };

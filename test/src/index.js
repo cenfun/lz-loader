@@ -1,4 +1,7 @@
+
+//https://www.json-generator.com/
 const data = require("./data.json");
+
 const text = require("./text.txt");
 
 const component = {
