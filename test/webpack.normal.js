@@ -1,8 +1,8 @@
 const StatsReportPlugin = require("webpack-stats-report").StatsReportPlugin;
 
 module.exports = {
-    mode: "production",
-    //mode: "development",
+    //mode: "production",
+    mode: "development",
     devtool: "source-map",
     output: {
         filename: "lz-string-loader-test.normal.js",

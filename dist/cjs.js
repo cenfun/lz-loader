@@ -1,6 +1,6 @@
 const path = require("path");
 const loaderUtils = require("loader-utils");
-const LzString = require("./runtime/compress.js");
+const compress = require("./runtime/compress.js");
 
 const loaderApi = function(source) {
 
@@ -12,11 +12,11 @@ const loaderApi = function(source) {
     const ext = path.extname(this.resourcePath);
     const isJson = ext === ".json";
 
-    const lzStr = LzString.compressToBase64(`${source}`);
+    const lzStr = compress(`${source}`);
 
-    let out = `const LzString = require(${apiPath});\n`;
+    let out = `const decompress = require(${apiPath});\n`;
     out += `const source = "${lzStr}";\n`;
-    out += "let result = LzString.decompressFromBase64(source);\n";
+    out += "let result = decompress(source);\n";
     if (isJson) {
         out += "result = JSON.parse(result);\n";
     }
