@@ -32,10 +32,6 @@ see [test/webpack.lz.js](test/webpack.lz.js)
 | :-------------------------: | :---------: | :-----: | :--------------------- |
 | **[`esModule`](#esmodule)** | `{Boolean}` | `false` | Uses ES modules syntax |
 
-## Inline Example
-```js
-import json from 'lz-loader!./data.json';
-```
 
 ## Compressed Benchmark
 * test case: 523K
