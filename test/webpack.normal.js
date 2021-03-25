@@ -5,13 +5,13 @@ module.exports = {
     mode: "development",
     devtool: "source-map",
     output: {
-        filename: "lz-string-loader-test.normal.js",
+        filename: "lz-loader-test.normal.js",
         umdNamedDefine: true,
-        library: "lz-string-loader-test.normal",
+        library: "lz-loader-test.normal",
         libraryTarget: "umd"
     },
     plugins: [new StatsReportPlugin({
-        title: "Stats Report - lz-string-loader-test.normal",
+        title: "Stats Report - lz-loader-test.normal",
         output: ".temp/stats-report.normal.html",
         outputStatsJson: true,
         generateMinifiedAndGzipSize: true

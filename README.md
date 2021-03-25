@@ -1,10 +1,10 @@
-# lz-string-loader
+# lz-loader
 
 A loader for webpack that allows importing assets (json/txt/svg/html/css ...) as a compressed string with [lz-string](https://github.com/pieroxy/lz-string)
 
 ## Install
 ```sh
-npm install lz-string-loader -D
+npm install lz-loader -D
 ```
 
 ## add the loader to webpack config
@@ -16,7 +16,7 @@ module.exports = {
             test: /\.(json|txt|svg)$/,
             type: "javascript/auto",
             use: {
-                loader: "lz-string-loader"
+                loader: "lz-loader"
                 options: {
                     esModule: false
                 }
@@ -34,7 +34,7 @@ see [test/webpack.lz.js](test/webpack.lz.js)
 
 ## Inline Example
 ```js
-import json from 'lz-string-loader!./data.json';
+import json from 'lz-loader!./data.json';
 ```
 
 ## Compressed Benchmark
@@ -44,8 +44,8 @@ import json from 'lz-string-loader!./data.json';
     * [text.txt](test/src/text.txt) 4K
 * [normal build](test/webpack.normal.js) (uncompressed): 347K
 * normal build + production (minify + uncompressed): 345K
-* use [lz-string-loader](test/webpack.lz.js) (compressed): 168K
-* use lz-string-loader + production (minify + compressed): 161K
+* use [lz-loader](test/webpack.lz.js) (compressed): 168K
+* use lz-loader + production (minify + compressed): 161K
 
 ## Changelogs
 

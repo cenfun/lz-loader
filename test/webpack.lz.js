@@ -6,13 +6,13 @@ module.exports = {
     mode: "development",
     devtool: "source-map",
     output: {
-        filename: "lz-string-loader-test.lz.js",
+        filename: "lz-loader-test.lz.js",
         umdNamedDefine: true,
-        library: "lz-string-loader-test.lz",
+        library: "lz-loader-test.lz",
         libraryTarget: "umd"
     },
     plugins: [new StatsReportPlugin({
-        title: "Stats Report - lz-string-loader-test.lz",
+        title: "Stats Report - lz-loader-test.lz",
         output: ".temp/stats-report.lz.html",
         outputStatsJson: true,
         generateMinifiedAndGzipSize: true
@@ -22,7 +22,7 @@ module.exports = {
             test: /\.(json|txt)$/,
             type: "javascript/auto",
             use: {
-                //loader: "lz-string-loader"
+                //loader: "lz-loader"
                 loader: path.resolve(__dirname, "../"),
                 options: {
                     esModule: false

@@ -1,11 +1,11 @@
 {
-  "name": "lz-string-loader",
+  "name": "lz-loader",
   "version": "1.0.0",
   "description": "",
   "main": "dist/cjs.js",
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/cenfun/lz-string-loader.git"
+    "url": "git+https://github.com/cenfun/lz-loader.git"
   },
   "files": [
     "dist"
