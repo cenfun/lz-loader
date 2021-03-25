@@ -1,10 +1,12 @@
 const path = require("path");
 const loaderUtils = require("loader-utils");
-const LzString = require("./runtime/api.js");
+const LzString = require("./runtime/compress.js");
 
 const loaderApi = function(source) {
 
-    const apiPath = loaderUtils.stringifyRequest(this, require.resolve("./runtime/api.js"));
+    //esModule
+
+    const apiPath = loaderUtils.stringifyRequest(this, require.resolve("./runtime/decompress.js"));
     //console.log(apiPath);
 
     const ext = path.extname(this.resourcePath);
