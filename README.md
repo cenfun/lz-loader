@@ -47,7 +47,9 @@ see [https://webpack.js.org/concepts/loaders/#inline](https://webpack.js.org/con
     * [icons.svg](test/src/icons.svg) 563K
     * [text.txt](test/src/text.txt) 100K
 * [normal build](test/webpack.normal.js) (uncompressed): 1017K
-* [lz build](test/webpack.lz.js) (compressed): 429K (58% saved)
+* [normal build + production](test/webpack.normal.js) (uncompressed + minify): 1010K
+* [lz build](test/webpack.lz.js) (compressed): 429K (57.82% saved)
+* [lz build + production](test/webpack.lz.js) (compressed + minify): 423K (58.12% saved)
 
 ## Changelogs
 
