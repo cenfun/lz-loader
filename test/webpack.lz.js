@@ -1,10 +1,10 @@
-const path = require("path");
 const StatsReportPlugin = require("webpack-stats-report").StatsReportPlugin;
 
 module.exports = {
     //mode: "production",
     mode: "development",
     devtool: "source-map",
+    target: ["web", "es5"],
     output: {
         filename: "lz-loader-test.lz.js",
         umdNamedDefine: true,
@@ -19,11 +19,20 @@ module.exports = {
     })],
     module: {
         rules: [{
-            test: /\.(json|txt)$/,
+            test: /\.(js)$/,
+            use: {
+                loader: "babel-loader",
+                options: {
+                    cacheDirectory: true,
+                    babelrc: false,
+                    presets: ["@babel/preset-env"]
+                }
+            }
+        }, {
+            test: /\.(json|txt|svg)$/,
             type: "javascript/auto",
             use: {
-                //loader: "lz-loader"
-                loader: path.resolve(__dirname, "../"),
+                loader: "lz-loader",
                 options: {
                     esModule: false
                 }

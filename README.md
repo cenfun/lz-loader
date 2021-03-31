@@ -27,6 +27,13 @@ module.exports = {
 ```
 see [test/webpack.lz.js](test/webpack.lz.js)
 
+## Inline
+```js
+//inline loader
+const str = require("lz-loader!./icons.svg");
+```
+see [https://webpack.js.org/concepts/loaders/#inline](https://webpack.js.org/concepts/loaders/#inline)
+
 ## Options
 |            Name             |    Type     | Default | Description            |
 | :-------------------------: | :---------: | :-----: | :--------------------- |
@@ -34,14 +41,13 @@ see [test/webpack.lz.js](test/webpack.lz.js)
 
 
 ## Compressed Benchmark
-* test case: 523K
+* test case: 1182K
     * [index.js](test/src/index.js) 1K
     * [data.json](test/src/data.json) 518K
-    * [text.txt](test/src/text.txt) 4K
-* [normal build](test/webpack.normal.js) (uncompressed): 347K
-* normal build + production (minify + uncompressed): 345K
-* use [lz-loader](test/webpack.lz.js) (compressed): 168K
-* use lz-loader + production (minify + compressed): 161K
+    * [icons.svg](test/src/icons.svg) 563K
+    * [text.txt](test/src/text.txt) 100K
+* [normal build](test/webpack.normal.js) (uncompressed): 1017K
+* [lz build](test/webpack.lz.js) (compressed): 429K (58% saved)
 
 ## Changelogs
 

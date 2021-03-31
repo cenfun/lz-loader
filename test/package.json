@@ -4,9 +4,19 @@
     "description": "",
     "main": "src/index.js",
     "scripts": {
-        "build": "npx webpack -c webpack.lz.js && npx webpack -c webpack.normal.js"
+        "link": "node ./scripts.js",
+        "build-lz": "npx webpack -c webpack.lz.js",
+        "build-normal": "npx webpack -c webpack.normal.js",
+        "build": "npm run link && npm run build-lz && npm run build-normal"
     },
     "devDependencies": {
+        "@babel/core": "^7.13.14",
+        "@babel/preset-env": "^7.13.12",
+        "babel-loader": "^8.2.2",
+        "loader-utils": "^2.0.0",
+        "rimraf": "^3.0.2",
+        "schema-utils": "^3.0.0",
+        "shelljs": "^0.8.4",
         "webpack": "^5.28.0",
         "webpack-cli": "^4.5.0",
         "webpack-stats-report": "^1.1.8"

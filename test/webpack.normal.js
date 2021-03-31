@@ -4,6 +4,7 @@ module.exports = {
     //mode: "production",
     mode: "development",
     devtool: "source-map",
+    target: ["web", "es5"],
     output: {
         filename: "lz-loader-test.normal.js",
         umdNamedDefine: true,
@@ -18,7 +19,17 @@ module.exports = {
     })],
     module: {
         rules: [{
-            test: /\.(txt)$/,
+            test: /\.(js)$/,
+            use: {
+                loader: "babel-loader",
+                options: {
+                    cacheDirectory: true,
+                    babelrc: false,
+                    presets: ["@babel/preset-env"]
+                }
+            }
+        }, {
+            test: /\.(txt|svg)$/,
             type: "asset/source"
         }]
     }

@@ -12,8 +12,32 @@
     <script src="../dist/lz-loader-test.lz.js"></script>
     <script src="../dist/lz-loader-test.normal.js"></script>
     <script>
-        console.log(window["lz-loader-test.lz"]);
-        console.log(window["lz-loader-test.normal"]);
+        console.log("lz", window["lz-loader-test.lz"]);
+        console.log("normal", window["lz-loader-test.normal"]);
+
+        var icons = document.querySelector(".svg-icons");
+        //console.log(icons)
+        var symbols = icons.querySelectorAll("symbol");
+
+        var ns = 'http://www.w3.org/2000/svg';
+
+        for (var i = 0, l = symbols.length; i < l; i++) {
+            var item = symbols[i];
+            var svg = document.createElementNS(ns, "svg");
+            svg.setAttribute("width", 20);
+            svg.setAttribute("height", 20);
+
+            var use = document.createElementNS(ns, "use");
+            use.setAttribute("href", "#" + item.id)
+            svg.appendChild(use);
+
+            document.body.appendChild(svg);
+        }
+
+        var div = document.createElement("div");
+        div.innerHTML = window["lz-loader-test.lz"].text;
+        document.body.appendChild(div);
+
     </script>
 </body>
 
