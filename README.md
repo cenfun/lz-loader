@@ -30,7 +30,7 @@ see [test/webpack.lz.js](test/webpack.lz.js)
 ## Inline
 ```js
 //inline loader
-const str = require("lz-loader!./icons.svg");
+const str = require("!!lz-loader!./icons.svg");
 ```
 see [https://webpack.js.org/concepts/loaders/#inline](https://webpack.js.org/concepts/loaders/#inline)
 

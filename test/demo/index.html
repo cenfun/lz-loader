@@ -9,6 +9,42 @@
 </head>
 
 <body>
+    <div class="p-2">
+        <button type="button" class="btn btn-primary">Primary</button>
+        <button type="button" class="btn btn-secondary">Secondary</button>
+        <button type="button" class="btn btn-success">Success</button>
+        <button type="button" class="btn btn-danger">Danger</button>
+        <button type="button" class="btn btn-warning">Warning</button>
+        <button type="button" class="btn btn-info">Info</button>
+        <button type="button" class="btn btn-light">Light</button>
+        <button type="button" class="btn btn-dark">Dark</button>
+        <button type="button" class="btn btn-link">Link</button>
+    </div>
+    <div class="p-2 btn-group" role="group" aria-label="Basic example">
+        <button type="button" class="btn btn-primary">Left</button>
+        <button type="button" class="btn btn-primary">Middle</button>
+        <button type="button" class="btn btn-primary">Right</button>
+    </div>
+
+    <div class="p-2">
+        <div class="spinner-border text-primary" role="status">
+        </div>
+        <div class="spinner-border text-secondary" role="status">
+        </div>
+        <div class="spinner-border text-success" role="status">
+        </div>
+        <div class="spinner-border text-danger" role="status">
+        </div>
+        <div class="spinner-border text-warning" role="status">
+        </div>
+        <div class="spinner-border text-info" role="status">
+        </div>
+        <div class="spinner-border text-light" role="status">
+        </div>
+        <div class="spinner-border text-dark" role="status">
+        </div>
+    </div>
+
     <script src="../dist/lz-loader-test.lz.js"></script>
     <script src="../dist/lz-loader-test.normal.js"></script>
     <script>
@@ -26,6 +62,7 @@
             var svg = document.createElementNS(ns, "svg");
             svg.setAttribute("width", 20);
             svg.setAttribute("height", 20);
+            svg.setAttribute("class", "m-1");
 
             var use = document.createElementNS(ns, "use");
             use.setAttribute("href", "#" + item.id)

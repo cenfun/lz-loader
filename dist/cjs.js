@@ -2,6 +2,7 @@ const path = require("path");
 const loaderUtils = require("loader-utils");
 const { validate } = require("schema-utils");
 const compress = require("./runtime/compress.js");
+const decompress = require("./runtime/decompress.js");
 const schema = require("./options.json");
 
 const loaderApi = function(source) {
@@ -45,5 +46,8 @@ const loaderApi = function(source) {
 
     return out;
 };
+
+loaderApi.compress = compress;
+loaderApi.decompress = decompress;
 
 module.exports = loaderApi;

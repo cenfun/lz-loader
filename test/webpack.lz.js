@@ -29,6 +29,21 @@ module.exports = {
                 }
             }
         }, {
+            test: /\.css$/,
+            use: [{
+                loader: "style-loader",
+                options: {
+                    injectType: "singletonStyleTag"
+                }
+            }, {
+                loader: "css-loader",
+                options: {
+                    esModule: false,
+                    import: false,
+                    sourceMap: false
+                }
+            }]
+        }, {
             test: /\.(json|txt|svg)$/,
             type: "javascript/auto",
             use: {

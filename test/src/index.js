@@ -4,8 +4,10 @@ const data = require("./data.json");
 
 const text = require("./text.txt");
 
+require("./bootstrap.css");
+
 //inline loader
-//const xml = require("lz-loader!./icons.svg");
+//const xml = require("!!lz-loader!./icons.svg");
 
 const xml = require("./icons.svg");
 
