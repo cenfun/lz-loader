@@ -42,14 +42,10 @@ see [https://webpack.js.org/concepts/loaders/#inline](https://webpack.js.org/con
 
 ## Compressed Benchmark
 * test case: 1182K
-    * [index.js](test/src/index.js) 1K
-    * [data.json](test/src/data.json) 518K
-    * [icons.svg](test/src/icons.svg) 563K
-    * [text.txt](test/src/text.txt) 100K
-* [normal build](test/webpack.normal.js) (uncompressed): 1017K
-* [normal build + production](test/webpack.normal.js) (uncompressed + minify): 1010K
-* [lz build](test/webpack.lz.js) (compressed): 429K (57.82% saved)
-* [lz build + production](test/webpack.lz.js) (compressed + minify): 423K (58.12% saved)
+* normal build (uncompressed): 1017K
+* normal build + production (uncompressed + minify): 1010K
+* lz build (compressed): 429K (57.82% saved)
+* lz build + production (compressed + minify): 423K (58.12% saved)
 
 ## Changelogs
 
