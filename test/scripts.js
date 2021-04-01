@@ -35,22 +35,25 @@ const link = function() {
 
 };
 
-const createWebpackConf = function(option) {
+const createWebpackConf = function(item) {
+
+    const name = item.name;
+    
     const conf = {
-        entry: path.resolve(option.entry),
-        mode: option.mode,
+        entry: path.resolve(item.entry),
+        mode: item.mode,
         cache: false,
         devtool: "source-map",
         target: ["web", "es5"],
         output: {
-            filename: `${option.name}.js`,
+            filename: `${name}.js`,
             umdNamedDefine: true,
-            library: option.name,
+            library: name,
             libraryTarget: "umd"
         },
         plugins: [new StatsReportPlugin({
-            title: `Stats Report - ${option.name}`,
-            output: `.temp/${option.name}.html`,
+            title: `Stats Report - ${name}`,
+            output: `.temp/${name}.html`,
             outputStatsJson: true,
             generateMinifiedAndGzipSize: true
         })],
@@ -69,7 +72,7 @@ const createWebpackConf = function(option) {
         }
     };
 
-    if (option.lz) {
+    if (item.lz === "lz") {
 
         conf.module.rules.push({
             test: /\.css$/,
@@ -157,37 +160,47 @@ const buildItem = function(item) {
 const build = async function() {
     link();
     
-    const list = [{
-        name: "css-development-normal",
-        entry: "src/case-css.js",
-        mode: "development"
+    const typeList = [{
+        type: "css",
+        entry: "src/case-css.js"
     }, {
-        name: "css-production-normal",
-        entry: "src/case-css.js",
-        mode: "production"
+        type: "json",
+        entry: "src/case-json.js"
     }, {
-        name: "css-development-lz",
-        entry: "src/case-css.js",
-        mode: "development",
-        lz: true
+        type: "svg",
+        entry: "src/case-svg.js"
     }, {
-        name: "css-production-lz",
-        entry: "src/case-css.js",
-        mode: "production",
-        lz: true
+        type: "text",
+        entry: "src/case-text.js"
     }, {
-        name: "lz-loader-normal",
-        entry: "src/index.js",
-        mode: "production"
-    }, {
-        name: "lz-loader-lz",
-        entry: "src/index.js",
-        mode: "production",
-        lz: true
+        type: "mixed",
+        entry: "src/index.js"
     }];
 
-    for (const item of list) {
-        await buildItem(item);
+    const modeList = ["development", "production"];
+    const lzList = ["", "lz"];
+
+    const list = [];
+    typeList.forEach(t => {
+        modeList.forEach(mode => {
+            lzList.forEach(lz => {
+                const item = Object.assign({}, t);
+                item.mode = mode;
+                item.lz = lz;
+                const arr = [item.type, item.mode];
+                if (item.lz) {
+                    arr.push(item.lz);
+                }
+                item.name = arr.join("-");
+                list.push(item);
+            });
+        });
+    });
+
+    console.log(list);
+
+    for (const job of list) {
+        await buildItem(job);
     }
 
 };
