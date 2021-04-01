@@ -45,7 +45,7 @@ const getCssLoaderString = function(source, esModule, apiPath) {
     const lzStr = compress(cssItem.value);
 
     const key = `lz-string-key-${Math.random().toString().substr(2)}`;
-    console.log(key);
+    //console.log(key);
 
     cssItem.value = key;
     //console.log(cssItem);
