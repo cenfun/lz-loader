@@ -33,7 +33,7 @@ const str = require("!!lz-loader!./icons.svg");
 ```
 see [https://webpack.js.org/concepts/loaders/#inline](https://webpack.js.org/concepts/loaders/#inline)
 
-## Compress for css-loader
+## Compress for css-loader before insert by style-loader
 ```js
 //webpack.config.js
 module.exports = {
