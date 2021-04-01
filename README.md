@@ -113,4 +113,5 @@ module.exports = {
 
 ## Changelogs
 
-* 1.0.0
+* 1.0.1
+    * added new feature for css-loader
