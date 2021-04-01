@@ -41,11 +41,46 @@ see [https://webpack.js.org/concepts/loaders/#inline](https://webpack.js.org/con
 
 
 ## Compressed Benchmark
-* test case: 1182K
-* normal build (uncompressed): 1017K
-* normal build + production (uncompressed + minify): 1010K
-* lz build (compressed): 429K (57.82% saved)
-* lz build + production (compressed + minify): 423K (58.12% saved)
+* css: [test/src/case-css.js](test/src/case-css.js)
+* json: [test/src/case-json.js](test/src/case-json.js)
+* svg: [test/src/case-svg.js](test/src/case-svg.js)
+* text: [test/src/case-text.js](test/src/case-text.js)
+* mixed: [test/src/index.js](test/src/index.js)
+```sh
+┌───────┬─────────────┬─────────┬──────────┬──────────┬──────────────┐
+│ type  │ build mode  │ with lz │ duration │     size │ size reduced │
+├───────┼─────────────┼─────────┼──────────┼──────────┼──────────────┤
+│ css   │ development │ false   │ 1,537 ms │ 240.7 KB │            - │
+│ css   │ development │ true    │   343 ms │  92.5 KB │       61.59% │
+├───────┼─────────────┼─────────┼──────────┼──────────┼──────────────┤
+│ css   │ production  │ false   │   609 ms │ 229.3 KB │            - │
+│ css   │ production  │ true    │   547 ms │  77.2 KB │       66.34% │
+├───────┼─────────────┼─────────┼──────────┼──────────┼──────────────┤
+│ json  │ development │ false   │   108 ms │ 342.2 KB │            - │
+│ json  │ development │ true    │   237 ms │ 165.8 KB │       51.56% │
+├───────┼─────────────┼─────────┼──────────┼──────────┼──────────────┤
+│ json  │ production  │ false   │   274 ms │ 340.4 KB │            - │
+│ json  │ production  │ true    │   418 ms │ 160.6 KB │       52.82% │
+├───────┼─────────────┼─────────┼──────────┼──────────┼──────────────┤
+│ svg   │ development │ false   │   290 ms │ 576.5 KB │            - │
+│ svg   │ development │ true    │   298 ms │ 266.8 KB │       53.71% │
+├───────┼─────────────┼─────────┼──────────┼──────────┼──────────────┤
+│ svg   │ production  │ false   │   477 ms │ 570.1 KB │            - │
+│ svg   │ production  │ true    │   488 ms │ 261.4 KB │       54.14% │
+├───────┼─────────────┼─────────┼──────────┼──────────┼──────────────┤
+│ text  │ development │ false   │   108 ms │ 220.3 KB │            - │
+│ text  │ development │ true    │   176 ms │ 100.8 KB │       54.23% │
+├───────┼─────────────┼─────────┼──────────┼──────────┼──────────────┤
+│ text  │ production  │ false   │   265 ms │ 218.5 KB │            - │
+│ text  │ production  │ true    │   379 ms │  95.7 KB │       56.21% │
+├───────┼─────────────┼─────────┼──────────┼──────────┼──────────────┤
+│ mixed │ development │ false   │   845 ms │   1.3 MB │            - │
+│ mixed │ development │ true    │   741 ms │ 606.7 KB │       55.87% │
+├───────┼─────────────┼─────────┼──────────┼──────────┼──────────────┤
+│ mixed │ production  │ false   │ 1,103 ms │   1.3 MB │            - │
+│ mixed │ production  │ true    │   971 ms │ 588.8 KB │       56.61% │
+└───────┴─────────────┴─────────┴──────────┴──────────┴──────────────┘
+```
 
 ## Changelogs
 

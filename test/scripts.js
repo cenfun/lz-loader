@@ -4,6 +4,34 @@ const rimraf = require("rimraf");
 const shelljs = require("shelljs");
 const webpack = require("webpack");
 const StatsReportPlugin = require("webpack-stats-report").StatsReportPlugin;
+const ConsoleGrid = require("console-grid");
+
+//'black', 'red', 'green', 'yellow', 'blue', 'magenta', 'cyan', 'white'
+const CGS = ConsoleGrid.Style;
+const consoleGrid = new ConsoleGrid();
+
+const BF = function(v, digits = 1, base = 1024) {
+    if (v === 0) {
+        return "0 B";
+    }
+    let prefix = "";
+    if (v < 0) {
+        v = Math.abs(v);
+        prefix = "-";
+    }
+    const units = ["B", "KB", "MB", "GB", "TB", "PB", "EB", "ZB", "YB"];
+    for (let i = 0, l = units.length; i < l; i++) {
+        const min = Math.pow(base, i);
+        const max = Math.pow(base, i + 1);
+        if (v > min && v < max) {
+            const unit = ` ${units[i]}`;
+            v = prefix + (v / min).toFixed(digits) + unit;
+            break;
+        }
+    }
+    return v;
+};
+
 
 const link = function() {
     const nPath = path.resolve(__dirname, "node_modules/lz-loader/");
@@ -72,7 +100,7 @@ const createWebpackConf = function(item) {
         }
     };
 
-    if (item.lz === "lz") {
+    if (item.lz) {
 
         conf.module.rules.push({
             test: /\.css$/,
@@ -146,11 +174,16 @@ const buildItem = function(item) {
         const conf = createWebpackConf(item);
         webpack(conf, function(err, stats) {
             if (err) {
-                console.log(err);
+                console.log(CGS.red(err));
             }
 
-            const cost = (new Date().getTime() - now).toLocaleString();
-            console.log(`build ${item.name} cost: ${cost}ms`);
+            const duration = `${(new Date().getTime() - now).toLocaleString()} ms`;
+            item.duration = duration;
+            console.log(`build ${item.name} cost: ${duration}`);
+
+            const file = path.resolve("./dist", conf.output.filename);
+            const stat = fs.statSync(file);
+            item.size = stat.size;
 
             resolve();
         });
@@ -178,7 +211,7 @@ const build = async function() {
     }];
 
     const modeList = ["development", "production"];
-    const lzList = ["", "lz"];
+    const lzList = [false, true];
 
     const list = [];
     typeList.forEach(t => {
@@ -189,7 +222,7 @@ const build = async function() {
                 item.lz = lz;
                 const arr = [item.type, item.mode];
                 if (item.lz) {
-                    arr.push(item.lz);
+                    arr.push("lz");
                 }
                 item.name = arr.join("-");
                 list.push(item);
@@ -197,11 +230,61 @@ const build = async function() {
         });
     });
 
-    console.log(list);
-
     for (const job of list) {
         await buildItem(job);
     }
+
+    //report
+    console.log(list);
+
+    const rows = [];
+    //update reduced
+    list.forEach((item, i) => {
+        rows.push(item);
+        if (item.lz) {
+            const prev = list[i - 1];
+            item.reduced = `${((prev.size - item.size) / prev.size * 100).toFixed(2)}%`;
+            if (i !== list.length - 1) {
+                rows.push({
+                    innerBorder: true
+                });
+            }
+        }
+    });
+
+    typeList.forEach(item => {
+        console.log(`* ${item.type}: [test/${item.entry}](test/${item.entry})`);
+    });
+
+    consoleGrid.render({
+        option: {},
+        columns: [{
+            id: "type",
+            name: "type"
+        }, {
+            id: "mode",
+            name: "build mode"
+        }, {
+            id: "lz",
+            name: "with lz"
+        }, {
+            id: "duration",
+            name: "duration",
+            align: "right"
+        }, {
+            id: "size",
+            name: "size",
+            align: "right",
+            formatter: function(v) {
+                return BF(v);
+            }
+        }, {
+            id: "reduced",
+            name: "size reduced",
+            align: "right"
+        }],
+        rows: rows
+    });
 
 };
 
