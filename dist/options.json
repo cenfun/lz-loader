@@ -3,6 +3,9 @@
   "properties": {
     "esModule": {
       "type": "boolean"
+    },
+    "cssLoader": {
+      "type": "boolean"
     }
   },
   "type": "object"

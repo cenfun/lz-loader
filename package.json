@@ -12,6 +12,8 @@
   ],
   "scripts": {},
   "dependencies": {
+    "escodegen": "^2.0.0",
+    "esprima": "^4.0.1",
     "loader-utils": "^2.0.0",
     "schema-utils": "^3.0.0"
   },

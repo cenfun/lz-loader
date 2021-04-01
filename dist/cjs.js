@@ -5,22 +5,68 @@ const compress = require("./runtime/compress.js");
 const decompress = require("./runtime/decompress.js");
 const schema = require("./options.json");
 
-const loaderApi = function(source) {
+//ast
+const esprima = require("esprima");
+const escodegen = require("escodegen");
 
-    const options = loaderUtils.getOptions(this);
 
-    validate(schema, options, {
-        name: "LZ String Loader",
-        baseDataPath: "options"
+const getCssLoaderString = function(source, esModule, apiPath) {
+
+    //console.log(source.substr(0, 1000));
+
+    const tree = esprima.parseModule(source);
+
+    //console.log(tree);
+
+    let cssItem;
+    tree.body.forEach((e) => {
+        if (e.type === "ExpressionStatement") {
+            const expression = e.expression;
+            if (expression.type === "CallExpression") {
+                expression.arguments.forEach(a => {
+                    if (a.type === "ArrayExpression") {
+                        a.elements.forEach(item => {
+                            if (item.type === "Literal" && item.value) {
+                                cssItem = item;
+                            }
+                        });
+                    }
+                });
+            }
+        }
     });
 
-    const apiPath = loaderUtils.stringifyRequest(this, require.resolve("./runtime/decompress.js"));
-    //console.log(apiPath);
+    if (!cssItem) {
+        return source;
+    }
 
-    const ext = path.extname(this.resourcePath);
-    const isJson = ext === ".json";
-    const esModule = !!options.esModule;
+    //raw is value with \r\n
 
+    const lzStr = compress(cssItem.value);
+
+    const key = `lz-string-key-${Math.random().toString().substr(2)}`;
+    console.log(key);
+
+    cssItem.value = key;
+    //console.log(cssItem);
+
+    const importStr = esModule ? `import decompress from ${apiPath};\n` : `var decompress = require(${apiPath});\n`;
+
+    const newString = escodegen.generate(tree);
+
+    const index = newString.indexOf(key);
+
+    const ls = newString.substring(0, index - 1);
+    const rs = newString.substr(index + key.length + 1);
+
+    const out = `${importStr}${ls}decompress('${lzStr}')${rs}`;
+
+    //console.log(out.substr(0, 1000));
+
+    return out;
+};
+
+const getNormalString = function(source, esModule, apiPath, isJson) {
     const lzStr = compress(`${source}`);
 
     let out = "";
@@ -28,14 +74,14 @@ const loaderApi = function(source) {
     if (esModule) {
         out += `import decompress from ${apiPath};\n`;
     } else {
-        out += `const decompress = require(${apiPath});\n`;
+        out += `var decompress = require(${apiPath});\n`;
     }
        
-    out += `const source = "${lzStr}";\n`;
+    out += `var source = "${lzStr}";\n`;
     if (isJson) {
-        out += "const result = JSON.parse(decompress(source));\n";
+        out += "var result = JSON.parse(decompress(source));\n";
     } else {
-        out += "const result = decompress(source);\n";
+        out += "var result = decompress(source);\n";
     }
 
     if (esModule) {
@@ -45,6 +91,42 @@ const loaderApi = function(source) {
     }
 
     return out;
+};
+
+const loaderApi = function(source) {
+
+    const options = loaderUtils.getOptions(this);
+    validate(schema, options, {
+        name: "LZ String Loader",
+        baseDataPath: "options"
+    });
+
+    //==================================================================================
+    const esModule = !!options.esModule;
+   
+    const apiPath = loaderUtils.stringifyRequest(this, require.resolve("./runtime/decompress.js"));
+    //console.log(apiPath);
+
+    const ext = path.extname(this.resourcePath);
+    //console.log(ext);
+    const isJson = ext === ".json";
+
+    //==================================================================================
+    //support css loader string
+    if (options.cssLoader) {
+        let newSource;
+        try {
+            newSource = getCssLoaderString(source, esModule, apiPath);
+        } catch (e) {
+            console.log(e);
+        }
+        return newSource || source;
+    }
+
+    //==================================================================================
+    //normal json or string
+    return getNormalString(source, esModule, apiPath, isJson);
+
 };
 
 loaderApi.compress = compress;

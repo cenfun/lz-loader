@@ -36,6 +36,12 @@ module.exports = {
                     injectType: "singletonStyleTag"
                 }
             }, {
+                loader: "lz-loader",
+                options: {
+                    esModule: false,
+                    cssLoader: true
+                }
+            }, {
                 loader: "css-loader",
                 options: {
                     esModule: false,
