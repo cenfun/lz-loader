@@ -7,7 +7,7 @@ A loader for webpack that allows importing assets (json/txt/svg/html/css ...) as
 npm install lz-loader -D
 ```
 
-## add the loader to webpack config
+## Add the loader to webpack config
 ```js
 //webpack.config.js
 module.exports = {
@@ -25,7 +25,6 @@ module.exports = {
     }
 };
 ```
-see [test/webpack.lz.js](test/webpack.lz.js)
 
 ## Inline
 ```js
@@ -34,11 +33,41 @@ const str = require("!!lz-loader!./icons.svg");
 ```
 see [https://webpack.js.org/concepts/loaders/#inline](https://webpack.js.org/concepts/loaders/#inline)
 
-## Options
-|            Name             |    Type     | Default | Description            |
-| :-------------------------: | :---------: | :-----: | :--------------------- |
-| **[`esModule`](#esmodule)** | `{Boolean}` | `false` | Uses ES modules syntax |
+## Compress for css-loader
+```js
+//webpack.config.js
+module.exports = {
+    module: {
+        rules: [{
+            test: /\.css$/,
+            use: [{
+                loader: "style-loader",
+                options: {
+                    injectType: "singletonStyleTag"
+                }
+            }, {
+                loader: "lz-loader",
+                options: {
+                    esModule: false,
+                    cssLoader: true
+                }
+            }, {
+                loader: "css-loader",
+                options: {
+                    esModule: false,
+                    import: false,
+                    sourceMap: false
+                }
+            }]
+    }
+};
+```
 
+## Options
+| Name        |    Type     | Default | Description            |
+| :---------: | :---------: | :-----: | :--------------------- |
+| esModule    | `{Boolean}` | `false` | Uses ES modules syntax |
+| cssLoader   | `{Boolean}` | `false` | Uses for css-loader    |
 
 ## Compressed Benchmark
 * css: [test/src/case-css.js](test/src/case-css.js)
