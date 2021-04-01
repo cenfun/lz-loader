@@ -26,14 +26,14 @@ module.exports = {
 };
 ```
 
-## Inline
+## Inline loader
 ```js
 //inline loader
 const str = require("!!lz-loader!./icons.svg");
 ```
 see [https://webpack.js.org/concepts/loaders/#inline](https://webpack.js.org/concepts/loaders/#inline)
 
-## Compress for css-loader before insert by style-loader
+## Compression for css-loader before injected by style-loader
 ```js
 //webpack.config.js
 module.exports = {
@@ -69,12 +69,13 @@ module.exports = {
 | esModule    | `{Boolean}` | `false` | Uses ES modules syntax |
 | cssLoader   | `{Boolean}` | `false` | Uses for css-loader    |
 
-## Compressed Benchmark
+## Compression cases
 * css: [test/src/case-css.js](test/src/case-css.js)
 * json: [test/src/case-json.js](test/src/case-json.js)
 * svg: [test/src/case-svg.js](test/src/case-svg.js)
 * text: [test/src/case-text.js](test/src/case-text.js)
 * mixed: [test/src/index.js](test/src/index.js)
+## Benchmark
 ```sh
 ┌───────┬─────────────┬─────────┬──────────┬──────────┬──────────────┐
 │ type  │ build mode  │ with lz │ duration │     size │ size reduced │
