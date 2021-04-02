@@ -5,34 +5,34 @@ const compress = require("./runtime/compress.js");
 const decompress = require("./runtime/decompress.js");
 const schema = require("./options.json");
 
-const commonParser = require("./parsers/common.js");
-const cssLoaderParser = require("./parsers/css-loader.js");
+const commonCompressor = require("./compressors/common.js");
+const cssLoaderCompressor = require("./compressors/css-loader.js");
 
-const defaultParsers = {
-    "common": commonParser,
-    "css-loader": cssLoaderParser
+const defaultCompressors = {
+    "common": commonCompressor,
+    "css-loader": cssLoaderCompressor
 };
 
 const loaderApi = function(source) {
 
     const options = loaderUtils.getOptions(this);
     validate(schema, options, {
-        name: "LZ String Loader",
+        name: "LZ Loader",
         baseDataPath: "options"
     });
     
     const decompressPath = loaderUtils.stringifyRequest(this, require.resolve("./runtime/decompress.js"));
 
-    let parser = options.parser || "common";
-    if (typeof parser === "string") {
-        parser = defaultParsers[parser];
+    let compressor = options.compressor || "common";
+    if (typeof compressor === "string") {
+        compressor = defaultCompressors[compressor];
     }
 
-    if (typeof parser !== "function") {
-        parser = defaultParsers.common;
+    if (typeof compressor !== "function") {
+        compressor = defaultCompressors.common;
     }
 
-    return parser.call(this, source, compress, decompressPath, options);
+    return compressor.call(this, source, compress, decompressPath, options);
 };
 
 loaderApi.compress = compress;

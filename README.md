@@ -1,6 +1,6 @@
 # lz-loader
 
-A loader for webpack that allows importing assets (json/txt/svg/html/css ...) as a compressed string with [lz-string](https://github.com/pieroxy/lz-string)
+A loader for webpack that allows importing assets (json/txt/svg/html/css ...) as a compressed string with [lz-string](https://github.com/pieroxy/lz-string), and self decompressed on runtime.
 
 ## Install
 ```sh
@@ -11,7 +11,7 @@ npm install lz-loader -D
 | Name        |    Type               | Default | Description            |
 | :---------: | :-------------------: | :-----: | :--------------------- |
 | esModule    | `{Boolean}`           | `false` | Uses ES modules syntax |
-| parser      | `{String}/{Function}` |         | Custom parser          |
+| compressor  | `{String}/{Function}` |         | Custom compressor      |
 
 ## Add the loader to webpack config
 ```js
@@ -39,7 +39,7 @@ const str = require("!!lz-loader!./icons.svg");
 ```
 see [https://webpack.js.org/concepts/loaders/#inline](https://webpack.js.org/concepts/loaders/#inline)
 
-## Custom parser function
+## Custom compressor function
 ```js
 //webpack.config.js
 module.exports = {
@@ -52,7 +52,7 @@ module.exports = {
                 loader: "lz-loader",
                 options: {
                     esModule: false,
-                    parser: function(source, compress, decompressPath, options) {
+                    compressor: function(source, compress, decompressPath, options) {
                         var newSource = yourHandler(source);
                         return newSource;
                     }
@@ -63,7 +63,7 @@ module.exports = {
     }
 };
 ```
-## Css compression parser for css-loader 
+## Css compressor for css-loader 
 ```js
 //webpack.config.js
 module.exports = {
@@ -79,7 +79,7 @@ module.exports = {
                 loader: "lz-loader",
                 options: {
                     esModule: false,
-                    parser: "css-loader"
+                    compressor: "css-loader"
                 }
             }, {
                 loader: "css-loader",
@@ -92,7 +92,7 @@ module.exports = {
     }
 };
 ```
-see [dist/parsers/css-loader.js](dist/parsers/css-loader.js)
+see [dist/compressors/css-loader.js](dist/compressors/css-loader.js)
 
 ## Compression cases
 * css: [test/src/case-css.js](test/src/case-css.js)
