@@ -5,7 +5,6 @@ module.exports = function(source, compress, decompressPath, options) {
     const esModule = !!options.esModule;
 
     const ext = path.extname(this.resourcePath);
-    //console.log(ext);
     const isJson = ext === ".json";
 
     const lzStr = compress(`${source}`);

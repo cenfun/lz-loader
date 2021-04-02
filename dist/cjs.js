@@ -25,10 +25,15 @@ const loaderApi = function(source) {
 
     let compressor = options.compressor || "common";
     if (typeof compressor === "string") {
-        compressor = defaultCompressors[compressor];
+        const compressorName = compressor;
+        compressor = defaultCompressors[compressorName];
+        if (!compressor) {
+            console.log(`ERROR: Unknown compressor: ${compressorName}`);
+        }
     }
 
     if (typeof compressor !== "function") {
+        console.log(`The compressor is invalid: ${compressor}, it will be replaced with default common function.`);
         compressor = defaultCompressors.common;
     }
 

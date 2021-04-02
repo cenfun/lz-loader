@@ -4,12 +4,9 @@ const escodegen = require("escodegen");
 
 module.exports = function(source, compress, decompressPath, options) {
 
-    //console.log(source.substr(0, 1000));
     const esModule = !!options.esModule;
 
     const tree = esprima.parseModule(source);
-
-    //console.log(tree);
 
     let cssItem;
     tree.body.forEach((e) => {
