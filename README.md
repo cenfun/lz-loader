@@ -7,6 +7,12 @@ A loader for webpack that allows importing assets (json/txt/svg/html/css ...) as
 npm install lz-loader -D
 ```
 
+## Options
+| Name        |    Type               | Default | Description            |
+| :---------: | :-------------------: | :-----: | :--------------------- |
+| esModule    | `{Boolean}`           | `false` | Uses ES modules syntax |
+| parser      | `{String}/{Function}` |         | Custom parser          |
+
 ## Add the loader to webpack config
 ```js
 //webpack.config.js
@@ -33,7 +39,31 @@ const str = require("!!lz-loader!./icons.svg");
 ```
 see [https://webpack.js.org/concepts/loaders/#inline](https://webpack.js.org/concepts/loaders/#inline)
 
-## Compression for css-loader before injected by style-loader
+## Custom parser function
+```js
+//webpack.config.js
+module.exports = {
+    module: {
+        rules: [{
+            test: /\.css$/,
+            use: [{
+                loader: "after-loader",
+            }, {
+                loader: "lz-loader",
+                options: {
+                    esModule: false,
+                    parser: function(source, compress, decompressPath, options) {
+                        var newSource = yourHandler(source);
+                        return newSource;
+                    }
+                }
+            }, {
+                loader: "before-loader"
+            }]
+    }
+};
+```
+## Css compression parser for css-loader 
 ```js
 //webpack.config.js
 module.exports = {
@@ -49,7 +79,7 @@ module.exports = {
                 loader: "lz-loader",
                 options: {
                     esModule: false,
-                    cssLoader: true
+                    parser: "css-loader"
                 }
             }, {
                 loader: "css-loader",
@@ -62,12 +92,7 @@ module.exports = {
     }
 };
 ```
-
-## Options
-| Name        |    Type     | Default | Description            |
-| :---------: | :---------: | :-----: | :--------------------- |
-| esModule    | `{Boolean}` | `false` | Uses ES modules syntax |
-| cssLoader   | `{Boolean}` | `false` | Uses for css-loader    |
+see [dist/parsers/css-loader.js](dist/parsers/css-loader.js)
 
 ## Compression cases
 * css: [test/src/case-css.js](test/src/case-css.js)

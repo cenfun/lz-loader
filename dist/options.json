@@ -4,8 +4,15 @@
     "esModule": {
       "type": "boolean"
     },
-    "cssLoader": {
-      "type": "boolean"
+    "parser": {
+      "oneOf": [
+        {
+          "type": "string"
+        },
+        {
+          "instanceof": "Function"
+        }
+      ]
     }
   },
   "type": "object"

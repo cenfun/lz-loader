@@ -47,7 +47,9 @@ const link = function() {
         "dist/cjs.js": "dist/",
         "dist/options.json": "dist/",
         "dist/runtime/compress.js": "dist/runtime/",
-        "dist/runtime/decompress.js": "dist/runtime/"
+        "dist/runtime/decompress.js": "dist/runtime/",
+        "dist/parsers/common.js": "dist/parsers/",
+        "dist/parsers/css-loader.js": "dist/parsers/"
     };
 
     Object.keys(fileList).forEach(key => {
@@ -113,7 +115,17 @@ const createWebpackConf = function(item) {
                 loader: "lz-loader",
                 options: {
                     esModule: false,
-                    cssLoader: true
+                    parser: function(source, compress, decompressPath, options) {
+                        console.log("test custom parser:");
+                        console.log(decompressPath, options);
+                        return source;
+                    }
+                }
+            }, {
+                loader: "lz-loader",
+                options: {
+                    esModule: false,
+                    parser: "css-loader"
                 }
             }, {
                 loader: "css-loader",
@@ -235,7 +247,7 @@ const build = async function() {
     }
 
     //report
-    console.log(list);
+    //console.log(list);
 
     const rows = [];
     //update reduced
