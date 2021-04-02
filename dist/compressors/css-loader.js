@@ -4,9 +4,11 @@ const escodegen = require("escodegen");
 
 module.exports = function(source, compress, decompressPath, options) {
 
-    const esModule = !!options.esModule;
+    //console.log(source.substr(0, 1000));
 
     const tree = esprima.parseModule(source);
+
+    //console.log(tree);
 
     let cssItem;
     tree.body.forEach((e) => {
@@ -27,7 +29,6 @@ module.exports = function(source, compress, decompressPath, options) {
     });
 
     if (!cssItem) {
-        //TODO
         return source;
     }
 
@@ -35,12 +36,13 @@ module.exports = function(source, compress, decompressPath, options) {
 
     const lzStr = compress(cssItem.value);
 
-    const key = `lz-string-key-${Math.random().toString().substr(2)}`;
+    const key = `replace-key-${Math.random().toString().substr(2)}`;
     //console.log(key);
 
     cssItem.value = key;
     //console.log(cssItem);
 
+    const esModule = !!options.esModule;
     const importStr = esModule ? `import decompress from ${decompressPath};\n` : `var decompress = require(${decompressPath});\n`;
 
     const newString = escodegen.generate(tree);
