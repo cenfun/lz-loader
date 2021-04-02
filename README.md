@@ -8,10 +8,10 @@ npm install lz-loader -D
 ```
 
 ## Options
-| Name        |    Type               | Default | Description            |
-| :---------: | :-------------------: | :-----: | :--------------------- |
-| esModule    | `{Boolean}`           | `false` | Uses ES modules syntax |
-| compressor  | `{String}/{Function}` |         | Custom compressor      |
+| Name        |       Type               | Default | Description            |
+| :---------: | :----------------------: | :-----: | :--------------------- |
+| esModule    | `{Boolean}`              | `false` | Uses ES modules syntax |
+| compressor  | `{String} or {Function}` |         | Custom compressor      |
 
 ## Add the loader to webpack config
 ```js
@@ -138,6 +138,9 @@ see [dist/compressors/css-loader.js](dist/compressors/css-loader.js)
 ```
 
 ## Changelogs
+
+* 1.0.2
+    * added new option compressor for custom compression
 
 * 1.0.1
     * added new feature for css-loader
