@@ -1,17 +1,20 @@
 
 //https://github.com/pieroxy/lz-string
 //https://pieroxy.net/blog/pages/lz-string/index.html
+/* eslint-disable max-statements,complexity,no-constant-condition,max-depth */
 
-const keyStrBase64 = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789+/=";
+const keyStrBase64 = 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789+/=';
 
 const _compress = function(uncompressed, bitsPerChar, getCharFromInt) {
-    if (uncompressed === null) { return ""; }
+    if (uncompressed === null) {
+        return '';
+    }
     let i; let value;
     const context_dictionary = {};
     const context_dictionaryToCreate = {};
-    let context_c = "";
-    let context_wc = "";
-    let context_w = "";
+    let context_c = '';
+    let context_wc = '';
+    let context_w = '';
     let context_enlargeIn = 2;
     let context_dictSize = 3;
     let context_numBits = 2;
@@ -34,7 +37,7 @@ const _compress = function(uncompressed, bitsPerChar, getCharFromInt) {
             if (Object.prototype.hasOwnProperty.call(context_dictionaryToCreate, context_w)) {
                 if (context_w.charCodeAt(0) < 256) {
                     for (i = 0; i < context_numBits; i++) {
-                        context_data_val = (context_data_val << 1);
+                        context_data_val <<= 1;
                         if (context_data_position === bitsPerChar - 1) {
                             context_data_position = 0;
                             context_data.push(getCharFromInt(context_data_val));
@@ -53,7 +56,7 @@ const _compress = function(uncompressed, bitsPerChar, getCharFromInt) {
                         } else {
                             context_data_position++;
                         }
-                        value = value >> 1;
+                        value >>= 1;
                     }
                 } else {
                     value = 1;
@@ -78,7 +81,7 @@ const _compress = function(uncompressed, bitsPerChar, getCharFromInt) {
                         } else {
                             context_data_position++;
                         }
-                        value = value >> 1;
+                        value >>= 1;
                     }
                 }
                 context_enlargeIn--;
@@ -98,7 +101,7 @@ const _compress = function(uncompressed, bitsPerChar, getCharFromInt) {
                     } else {
                         context_data_position++;
                     }
-                    value = value >> 1;
+                    value >>= 1;
                 }
 
 
@@ -115,11 +118,11 @@ const _compress = function(uncompressed, bitsPerChar, getCharFromInt) {
     }
 
     // Output the code for w.
-    if (context_w !== "") {
+    if (context_w !== '') {
         if (Object.prototype.hasOwnProperty.call(context_dictionaryToCreate, context_w)) {
             if (context_w.charCodeAt(0) < 256) {
                 for (i = 0; i < context_numBits; i++) {
-                    context_data_val = (context_data_val << 1);
+                    context_data_val <<= 1;
                     if (context_data_position === bitsPerChar - 1) {
                         context_data_position = 0;
                         context_data.push(getCharFromInt(context_data_val));
@@ -138,7 +141,7 @@ const _compress = function(uncompressed, bitsPerChar, getCharFromInt) {
                     } else {
                         context_data_position++;
                     }
-                    value = value >> 1;
+                    value >>= 1;
                 }
             } else {
                 value = 1;
@@ -163,7 +166,7 @@ const _compress = function(uncompressed, bitsPerChar, getCharFromInt) {
                     } else {
                         context_data_position++;
                     }
-                    value = value >> 1;
+                    value >>= 1;
                 }
             }
             context_enlargeIn--;
@@ -183,7 +186,7 @@ const _compress = function(uncompressed, bitsPerChar, getCharFromInt) {
                 } else {
                     context_data_position++;
                 }
-                value = value >> 1;
+                value >>= 1;
             }
 
 
@@ -206,33 +209,34 @@ const _compress = function(uncompressed, bitsPerChar, getCharFromInt) {
         } else {
             context_data_position++;
         }
-        value = value >> 1;
+        value >>= 1;
     }
 
     // Flush the last char
     while (true) {
-        context_data_val = (context_data_val << 1);
+        context_data_val <<= 1;
         if (context_data_position === bitsPerChar - 1) {
             context_data.push(getCharFromInt(context_data_val));
             break;
+        } else {
+            context_data_position++;
         }
-        else { context_data_position++; }
     }
-    return context_data.join("");
+    return context_data.join('');
 };
 
 module.exports = function(input) {
     if (input === null) {
-        return "";
+        return '';
     }
     const res = _compress(input, 6, function(a) {
         return keyStrBase64.charAt(a);
     });
     switch (res.length % 4) {
+        case 0: return res;
+        case 1: return `${res}===`;
+        case 2: return `${res}==`;
+        case 3: return `${res}=`;
         default:
-        case 0 : return res;
-        case 1 : return `${res}===`;
-        case 2 : return `${res}==`;
-        case 3 : return `${res}=`;
     }
 };

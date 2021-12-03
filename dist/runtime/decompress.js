@@ -1,9 +1,10 @@
 
 //https://github.com/pieroxy/lz-string
 //https://pieroxy.net/blog/pages/lz-string/index.html
+/* eslint-disable max-statements,complexity,no-constant-condition */
 
 const f = String.fromCharCode;
-const keyStrBase64 = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789+/=";
+const keyStrBase64 = 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789+/=';
 const baseReverseDic = {};
 
 function getBaseValue(alphabet, character) {
@@ -22,11 +23,14 @@ const _decompress = function(length, resetValue, getNextValue) {
     let enlargeIn = 4;
     let dictSize = 4;
     let numBits = 3;
-    let entry = "";
+    let entry = '';
     const result = [];
     let i;
     let w;
-    let bits; let resb; let maxpower; let power;
+    let bits;
+    let resb;
+    let maxpower;
+    let power;
     let c;
     const data = {
         val: getNextValue(0), position: resetValue, index: 1
@@ -85,14 +89,15 @@ const _decompress = function(length, resetValue, getNextValue) {
             c = f(bits);
             break;
         case 2:
-            return "";
+            return '';
+        default:
     }
     dictionary[3] = c;
     w = c;
     result.push(c);
     while (true) {
         if (data.index > length) {
-            return "";
+            return '';
         }
 
         bits = 0;
@@ -148,7 +153,8 @@ const _decompress = function(length, resetValue, getNextValue) {
                 enlargeIn--;
                 break;
             case 2:
-                return result.join("");
+                return result.join('');
+            default:
         }
 
         if (enlargeIn === 0) {
@@ -183,8 +189,8 @@ const _decompress = function(length, resetValue, getNextValue) {
 
 
 module.exports = function(input) {
-    if (input === null || input === "") {
-        return "";
+    if (input === null || input === '') {
+        return '';
     }
     return _decompress(input.length, 32, function(index) {
         return getBaseValue(keyStrBase64, input.charAt(index));

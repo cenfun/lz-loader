@@ -1,15 +1,15 @@
-const path = require("path");
+const path = require('path');
 
 module.exports = function(source, compress, decompressPath, options) {
 
     const esModule = !!options.esModule;
 
     const ext = path.extname(this.resourcePath);
-    const isJson = ext === ".json";
+    const isJson = ext === '.json';
 
     const lzStr = compress(`${source}`);
 
-    let out = "";
+    let out = '';
 
     if (esModule) {
         out += `import decompress from ${decompressPath};\n`;
@@ -19,15 +19,15 @@ module.exports = function(source, compress, decompressPath, options) {
        
     out += `var source = "${lzStr}";\n`;
     if (isJson) {
-        out += "var result = JSON.parse(decompress(source));\n";
+        out += 'var result = JSON.parse(decompress(source));\n';
     } else {
-        out += "var result = decompress(source);\n";
+        out += 'var result = decompress(source);\n';
     }
 
     if (esModule) {
-        out += "export default result;";
+        out += 'export default result;';
     } else {
-        out += "module.exports = result;";
+        out += 'module.exports = result;';
     }
 
     return out;

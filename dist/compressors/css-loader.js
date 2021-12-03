@@ -1,7 +1,7 @@
 //ast
-const esprima = require("esprima");
-const esquery = require("esquery");
-const escodegen = require("escodegen");
+const esprima = require('esprima');
+const esquery = require('esquery');
+const escodegen = require('escodegen');
 
 module.exports = function(source, compress, decompressPath, options) {
 
@@ -12,11 +12,11 @@ module.exports = function(source, compress, decompressPath, options) {
     //console.log(tree);
 
     //http://estools.github.io/esquery/
-    const selectorAst = esquery.parse("CallExpression  > ArrayExpression > :nth-child(2)");
+    const selectorAst = esquery.parse('CallExpression  > ArrayExpression > :nth-child(2)');
     const matches = esquery.match(tree, selectorAst);
     
     if (!matches.length) {
-        console.log("No css-loader content matched. or mismatched version of css-loader");
+        console.log('No css-loader content matched. or mismatched version of css-loader');
         return source;
     }
 

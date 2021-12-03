@@ -1,10 +1,10 @@
-const fs = require("fs");
-const path = require("path");
-const rimraf = require("rimraf");
-const shelljs = require("shelljs");
-const webpack = require("webpack");
-const StatsReportPlugin = require("webpack-stats-report").StatsReportPlugin;
-const ConsoleGrid = require("console-grid");
+const fs = require('fs');
+const path = require('path');
+const rimraf = require('rimraf');
+const shelljs = require('shelljs');
+const webpack = require('webpack');
+const StatsReportPlugin = require('webpack-stats-report').StatsReportPlugin;
+const ConsoleGrid = require('console-grid');
 
 //'black', 'red', 'green', 'yellow', 'blue', 'magenta', 'cyan', 'white'
 const CGS = ConsoleGrid.Style;
@@ -12,14 +12,14 @@ const consoleGrid = new ConsoleGrid();
 
 const BF = function(v, digits = 1, base = 1024) {
     if (v === 0) {
-        return "0 B";
+        return '0 B';
     }
-    let prefix = "";
+    let prefix = '';
     if (v < 0) {
         v = Math.abs(v);
-        prefix = "-";
+        prefix = '-';
     }
-    const units = ["B", "KB", "MB", "GB", "TB", "PB", "EB", "ZB", "YB"];
+    const units = ['B', 'KB', 'MB', 'GB', 'TB', 'PB', 'EB', 'ZB', 'YB'];
     for (let i = 0, l = units.length; i < l; i++) {
         const min = Math.pow(base, i);
         const max = Math.pow(base, i + 1);
@@ -34,7 +34,7 @@ const BF = function(v, digits = 1, base = 1024) {
 
 
 const link = function() {
-    const nPath = path.resolve(__dirname, "node_modules/lz-loader/");
+    const nPath = path.resolve(__dirname, '../node_modules/lz-loader/');
     if (fs.existsSync(nPath)) {
         rimraf.sync(nPath);
     }
@@ -42,24 +42,24 @@ const link = function() {
     fs.mkdirSync(nPath);
 
     const fileList = {
-        "package.json": "",
-        "README.md": "",
-        "dist/cjs.js": "dist/",
-        "dist/options.json": "dist/",
-        "dist/runtime/compress.js": "dist/runtime/",
-        "dist/runtime/decompress.js": "dist/runtime/",
-        "dist/compressors/common.js": "dist/compressors/",
-        "dist/compressors/css-loader.js": "dist/compressors/"
+        'package.json': '',
+        'README.md': '',
+        'dist/cjs.js': 'dist/',
+        'dist/options.json': 'dist/',
+        'dist/runtime/compress.js': 'dist/runtime/',
+        'dist/runtime/decompress.js': 'dist/runtime/',
+        'dist/compressors/common.js': 'dist/compressors/',
+        'dist/compressors/css-loader.js': 'dist/compressors/'
     };
 
     Object.keys(fileList).forEach(key => {
-        const fp = path.resolve(__dirname, "../", key);
+        const fp = path.resolve(__dirname, '../', key);
         if (fs.existsSync(fp)) {
             const des = path.resolve(nPath, fileList[key]);
             if (!fs.existsSync(des)) {
                 fs.mkdirSync(des);
             }
-            shelljs.cp("-R", fp, des);
+            shelljs.cp('-R', fp, des);
         }
     });
 
@@ -70,16 +70,17 @@ const createWebpackConf = function(item) {
     const name = item.name;
     
     const conf = {
-        entry: path.resolve(item.entry),
+        entry: path.resolve(__dirname, item.entry),
         mode: item.mode,
         cache: false,
-        devtool: "source-map",
-        target: ["web", "es5"],
+        devtool: 'source-map',
+        target: ['web', 'es5'],
         output: {
             filename: `${name}.js`,
+            path: path.resolve(__dirname, '../.temp'),
             umdNamedDefine: true,
             library: name,
-            libraryTarget: "umd"
+            libraryTarget: 'umd'
         },
         plugins: [new StatsReportPlugin({
             title: `Stats Report - ${name}`,
@@ -91,11 +92,11 @@ const createWebpackConf = function(item) {
             rules: [{
                 test: /\.(js)$/,
                 use: {
-                    loader: "babel-loader",
+                    loader: 'babel-loader',
                     options: {
                         cacheDirectory: true,
                         babelrc: false,
-                        presets: ["@babel/preset-env"]
+                        presets: ['@babel/preset-env']
                     }
                 }
             }]
@@ -107,28 +108,28 @@ const createWebpackConf = function(item) {
         conf.module.rules.push({
             test: /\.css$/,
             use: [{
-                loader: "style-loader",
+                loader: 'style-loader',
                 options: {
-                    injectType: "singletonStyleTag"
+                    injectType: 'singletonStyleTag'
                 }
             }, {
-                loader: "lz-loader",
+                loader: 'lz-loader',
                 options: {
                     esModule: false,
                     compressor: function(source, compress, decompressPath, options) {
-                        console.log("test custom compressor:");
+                        console.log('test custom compressor:');
                         console.log(decompressPath, options);
                         return source;
                     }
                 }
             }, {
-                loader: "lz-loader",
+                loader: 'lz-loader',
                 options: {
                     esModule: false,
-                    compressor: "css-loader"
+                    compressor: 'css-loader'
                 }
             }, {
-                loader: "css-loader",
+                loader: 'css-loader',
                 options: {
                     esModule: false,
                     import: false,
@@ -139,9 +140,9 @@ const createWebpackConf = function(item) {
 
         conf.module.rules.push({
             test: /\.(json|txt|svg)$/,
-            type: "javascript/auto",
+            type: 'javascript/auto',
             use: {
-                loader: "lz-loader",
+                loader: 'lz-loader',
                 options: {
                     esModule: false
                 }
@@ -153,12 +154,12 @@ const createWebpackConf = function(item) {
         conf.module.rules.push({
             test: /\.css$/,
             use: [{
-                loader: "style-loader",
+                loader: 'style-loader',
                 options: {
-                    injectType: "singletonStyleTag"
+                    injectType: 'singletonStyleTag'
                 }
             }, {
-                loader: "css-loader",
+                loader: 'css-loader',
                 options: {
                     esModule: false,
                     import: false,
@@ -169,7 +170,7 @@ const createWebpackConf = function(item) {
 
         conf.module.rules.push({
             test: /\.(txt|svg)$/,
-            type: "asset/source"
+            type: 'asset/source'
         });
 
     }
@@ -193,11 +194,13 @@ const buildItem = function(item) {
             item.duration = duration;
             console.log(`build ${item.name} cost: ${duration}`);
 
-            const file = path.resolve("./dist", conf.output.filename);
-            const stat = fs.statSync(file);
-            item.size = stat.size;
+            setTimeout(() => {
+                const file = path.resolve(conf.output.path, conf.output.filename);
+                const stat = fs.statSync(file);
+                item.size = stat.size;
 
-            resolve();
+                resolve();
+            });
         });
     });
 };
@@ -206,37 +209,39 @@ const build = async function() {
     link();
     
     const typeList = [{
-        type: "css",
-        entry: "src/case-css.js"
+        type: 'css',
+        entry: 'src/case-css.js'
     }, {
-        type: "json",
-        entry: "src/case-json.js"
+        type: 'json',
+        entry: 'src/case-json.js'
     }, {
-        type: "svg",
-        entry: "src/case-svg.js"
+        type: 'svg',
+        entry: 'src/case-svg.js'
     }, {
-        type: "text",
-        entry: "src/case-text.js"
+        type: 'text',
+        entry: 'src/case-text.js'
     }, {
-        type: "mixed",
-        entry: "src/index.js"
+        type: 'mixed',
+        entry: 'src/index.js'
     }];
 
-    const modeList = ["development", "production"];
+    const modeList = ['development', 'production'];
     const lzList = [false, true];
 
     const list = [];
     typeList.forEach(t => {
         modeList.forEach(mode => {
             lzList.forEach(lz => {
-                const item = Object.assign({}, t);
+                const item = {
+                    ... t
+                };
                 item.mode = mode;
                 item.lz = lz;
                 const arr = [item.type, item.mode];
                 if (item.lz) {
-                    arr.push("lz");
+                    arr.push('lz');
                 }
-                item.name = arr.join("-");
+                item.name = arr.join('-');
                 list.push(item);
             });
         });
@@ -271,29 +276,29 @@ const build = async function() {
     consoleGrid.render({
         option: {},
         columns: [{
-            id: "type",
-            name: "type"
+            id: 'type',
+            name: 'type'
         }, {
-            id: "mode",
-            name: "build mode"
+            id: 'mode',
+            name: 'build mode'
         }, {
-            id: "lz",
-            name: "with lz"
+            id: 'lz',
+            name: 'with lz'
         }, {
-            id: "duration",
-            name: "duration",
-            align: "right"
+            id: 'duration',
+            name: 'duration',
+            align: 'right'
         }, {
-            id: "size",
-            name: "size",
-            align: "right",
+            id: 'size',
+            name: 'size',
+            align: 'right',
             formatter: function(v) {
                 return BF(v);
             }
         }, {
-            id: "reduced",
-            name: "size reduced",
-            align: "right"
+            id: 'reduced',
+            name: 'size reduced',
+            align: 'right'
         }],
         rows: rows
     });

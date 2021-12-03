@@ -1,3 +1,3 @@
 
-const text = require("./asserts/text.txt");
+const text = require('./asserts/text.txt');
 module.exports = text;
