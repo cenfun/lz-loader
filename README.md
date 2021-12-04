@@ -140,6 +140,9 @@ see detail [test/test.js](test/test.js)
 
 ## Changelogs
 
+- 1.0.4
+  - fixed issue for inline json
+
 - 1.0.3
   - updated schema-utils to latest
 
