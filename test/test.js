@@ -133,7 +133,7 @@ const createWebpackConf = function(item) {
         }
     };
 
-    if (item.lz) {
+    if (item.lz && item.type !== 'inline') {
 
         conf.module.rules.push({
             test: /\.css$/,
@@ -325,6 +325,21 @@ const build = async function() {
                 list.push(item);
             });
         });
+    });
+
+    //inline case
+    list.push({
+        type: 'inline',
+        entry: 'src/case-inline.js',
+        mode: 'development',
+        lz: false
+    });
+
+    list.push({
+        type: 'inline',
+        entry: 'src/case-inline-lz.js',
+        mode: 'development',
+        lz: true
     });
 
     for (const job of list) {
