@@ -7,8 +7,32 @@ const StatsReportPlugin = require('webpack-stats-report').StatsReportPlugin;
 const ConsoleGrid = require('console-grid');
 
 //'black', 'red', 'green', 'yellow', 'blue', 'magenta', 'cyan', 'white'
-const CGS = ConsoleGrid.Style;
+const EC = require('eight-colors');
 const consoleGrid = new ConsoleGrid();
+
+const distPath = path.resolve(__dirname, 'dist');
+const tempPath = path.resolve(__dirname, '.temp');
+
+const logColor = function(color, msg) {
+    const fn = EC[color];
+    if (typeof (fn) === 'function') {
+        msg = fn(msg);
+    }
+    console.log(msg);
+    return msg;
+};
+
+const logRed = function(msg) {
+    return logColor('red', msg);
+};
+
+const logYellow = function(msg) {
+    return logColor('yellow', msg);
+};
+
+const logGreen = function(msg) {
+    return logColor('green', msg);
+};
 
 const BF = function(v, digits = 1, base = 1024) {
     if (v === 0) {
@@ -34,8 +58,12 @@ const BF = function(v, digits = 1, base = 1024) {
 
 
 const link = function() {
+    
     const nPath = path.resolve(__dirname, '../node_modules/lz-loader/');
+    console.log(`linking lz-loader: ${nPath}`);
+
     if (fs.existsSync(nPath)) {
+        console.log('removing previous lz-loader ...');
         rimraf.sync(nPath);
     }
 
@@ -63,6 +91,8 @@ const link = function() {
         }
     });
 
+    logGreen(`linked lz-loader: ${nPath}`);
+
 };
 
 const createWebpackConf = function(item) {
@@ -77,14 +107,14 @@ const createWebpackConf = function(item) {
         target: ['web', 'es5'],
         output: {
             filename: `${name}.js`,
-            path: path.resolve(__dirname, '../.temp'),
+            path: distPath,
             umdNamedDefine: true,
             library: name,
             libraryTarget: 'umd'
         },
         plugins: [new StatsReportPlugin({
             title: `Stats Report - ${name}`,
-            output: `.temp/${name}.html`,
+            output: path.resolve(tempPath, `stats-report-${name}.html`),
             outputStatsJson: true,
             generateMinifiedAndGzipSize: true
         })],
@@ -182,51 +212,101 @@ const createWebpackConf = function(item) {
 const buildItem = function(item) {
     return new Promise((resolve) => {
 
+        console.log(`building ${item.name}: ${item.entry}`);
         const now = new Date().getTime();
 
         const conf = createWebpackConf(item);
         webpack(conf, function(err, stats) {
+
+            // error for webpack self
             if (err) {
-                console.log(CGS.red(err));
+                logRed(err.stack || err);
+                if (err.details) {
+                    logRed(err.details);
+                }
+                resolve(1);
+                return;
+            }
+
+            const info = stats.toJson({
+                source: false,
+                reasons: false,
+                chunkModules: false
+            });
+
+            // error for project
+            if (stats.hasErrors()) {
+                logRed(`ERROR: Found ${info.errors.length} Errors on building ${item.name}`);
+                info.errors.forEach(function(it, i) {
+                    const msg = it.stack || it.message;
+                    logRed(`【${i + 1}】 ${msg}`);
+                });
+                resolve(1);
+                return;
+            }
+
+            if (stats.hasWarnings()) {
+                logYellow(`WARN: Found ${info.warnings.length} Warnings on building ${item.name}`);
+                info.warnings.forEach(function(it, i) {
+                    const msg = it.message || it.stack;
+                    logYellow(`【${i + 1}】 ${msg}`);
+                });
             }
 
             const duration = `${(new Date().getTime() - now).toLocaleString()} ms`;
             item.duration = duration;
-            console.log(`build ${item.name} cost: ${duration}`);
+            logGreen(`built ${item.name} cost: ${duration}`);
 
-            setTimeout(() => {
-                const file = path.resolve(conf.output.path, conf.output.filename);
-                const stat = fs.statSync(file);
-                item.size = stat.size;
+            const file = path.resolve(conf.output.path, conf.output.filename);
+            const stat = fs.statSync(file);
+            item.size = stat.size;
+            
+            resolve(0);
 
-                resolve();
-            });
         });
     });
 };
 
 const build = async function() {
+
+    // if (fs.existsSync(distPath)) {
+    //     console.log(`removing previous dist: ${distPath}`);
+    //     rimraf.sync(distPath);
+    // }
+
     link();
     
-    const typeList = [{
-        type: 'css',
-        entry: 'src/case-css.js'
-    }, {
-        type: 'json',
-        entry: 'src/case-json.js'
-    }, {
-        type: 'svg',
-        entry: 'src/case-svg.js'
-    }, {
-        type: 'text',
-        entry: 'src/case-text.js'
-    }, {
-        type: 'mixed',
-        entry: 'src/index.js'
-    }];
+    const typeList = [
+        {
+            type: 'css',
+            entry: 'src/case-css.js'
+        },
+        {
+            type: 'json',
+            entry: 'src/case-json.js'
+        },
+        {
+            type: 'svg',
+            entry: 'src/case-svg.js'
+        },
+        {
+            type: 'text',
+            entry: 'src/case-text.js'
+        },
+        {
+            type: 'mixed',
+            entry: 'src/index.js'
+        }
+    ];
 
-    const modeList = ['development', 'production'];
-    const lzList = [false, true];
+    const modeList = [
+        'development',
+        'production'
+    ];
+    const lzList = [
+        false,
+        true
+    ];
 
     const list = [];
     typeList.forEach(t => {
@@ -248,7 +328,10 @@ const build = async function() {
     });
 
     for (const job of list) {
-        await buildItem(job);
+        const code = await buildItem(job);
+        if (code) {
+            process.exit(1);
+        }
     }
 
     //report
@@ -302,6 +385,8 @@ const build = async function() {
         }],
         rows: rows
     });
+
+    console.log(`open ${EC.green('test/test.html')} for runtime validation`);
 
 };
 

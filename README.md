@@ -105,42 +105,46 @@ see [dist/compressors/css-loader.js](dist/compressors/css-loader.js)
 ┌───────┬─────────────┬─────────┬──────────┬──────────┬──────────────┐
 │ type  │ build mode  │ with lz │ duration │     size │ size reduced │
 ├───────┼─────────────┼─────────┼──────────┼──────────┼──────────────┤
-│ css   │ development │ false   │ 1,537 ms │ 240.7 KB │            - │
-│ css   │ development │ true    │   343 ms │  92.5 KB │       61.59% │
+│ css   │ development │ false   │ 1,411 ms │ 246.3 KB │            - │
+│ css   │ development │ true    │   682 ms │  99.3 KB │       59.69% │
 ├───────┼─────────────┼─────────┼──────────┼──────────┼──────────────┤
-│ css   │ production  │ false   │   609 ms │ 229.3 KB │            - │
-│ css   │ production  │ true    │   547 ms │  77.2 KB │       66.34% │
+│ css   │ production  │ false   │   659 ms │ 229.8 KB │            - │
+│ css   │ production  │ true    │   696 ms │  77.6 KB │       66.21% │
 ├───────┼─────────────┼─────────┼──────────┼──────────┼──────────────┤
-│ json  │ development │ false   │   108 ms │ 342.2 KB │            - │
-│ json  │ development │ true    │   237 ms │ 165.8 KB │       51.56% │
+│ json  │ development │ false   │   161 ms │ 342.3 KB │            - │
+│ json  │ development │ true    │   292 ms │ 165.9 KB │       51.53% │
 ├───────┼─────────────┼─────────┼──────────┼──────────┼──────────────┤
-│ json  │ production  │ false   │   274 ms │ 340.4 KB │            - │
-│ json  │ production  │ true    │   418 ms │ 160.6 KB │       52.82% │
+│ json  │ production  │ false   │   346 ms │ 340.4 KB │            - │
+│ json  │ production  │ true    │   469 ms │ 160.6 KB │       52.82% │
 ├───────┼─────────────┼─────────┼──────────┼──────────┼──────────────┤
-│ svg   │ development │ false   │   290 ms │ 576.5 KB │            - │
-│ svg   │ development │ true    │   298 ms │ 266.8 KB │       53.71% │
+│ svg   │ development │ false   │   420 ms │ 576.6 KB │            - │
+│ svg   │ development │ true    │   538 ms │ 267.0 KB │       53.69% │
 ├───────┼─────────────┼─────────┼──────────┼──────────┼──────────────┤
-│ svg   │ production  │ false   │   477 ms │ 570.1 KB │            - │
-│ svg   │ production  │ true    │   488 ms │ 261.4 KB │       54.14% │
+│ svg   │ production  │ false   │   648 ms │ 570.1 KB │            - │
+│ svg   │ production  │ true    │   562 ms │ 261.4 KB │       54.14% │
 ├───────┼─────────────┼─────────┼──────────┼──────────┼──────────────┤
-│ text  │ development │ false   │   108 ms │ 220.3 KB │            - │
-│ text  │ development │ true    │   176 ms │ 100.8 KB │       54.23% │
+│ text  │ development │ false   │   130 ms │ 220.4 KB │            - │
+│ text  │ development │ true    │   189 ms │ 101.0 KB │       54.17% │
 ├───────┼─────────────┼─────────┼──────────┼──────────┼──────────────┤
-│ text  │ production  │ false   │   265 ms │ 218.5 KB │            - │
-│ text  │ production  │ true    │   379 ms │  95.7 KB │       56.21% │
+│ text  │ production  │ false   │   317 ms │ 218.5 KB │            - │
+│ text  │ production  │ true    │   381 ms │  95.7 KB │       56.21% │
 ├───────┼─────────────┼─────────┼──────────┼──────────┼──────────────┤
-│ mixed │ development │ false   │   845 ms │   1.3 MB │            - │
-│ mixed │ development │ true    │   741 ms │ 606.7 KB │       55.87% │
+│ mixed │ development │ false   │   964 ms │   1.3 MB │            - │
+│ mixed │ development │ true    │   830 ms │ 613.7 KB │       55.54% │
 ├───────┼─────────────┼─────────┼──────────┼──────────┼──────────────┤
-│ mixed │ production  │ false   │ 1,103 ms │   1.3 MB │            - │
-│ mixed │ production  │ true    │   971 ms │ 588.8 KB │       56.61% │
+│ mixed │ production  │ false   │ 1,271 ms │   1.3 MB │            - │
+│ mixed │ production  │ true    │ 1,267 ms │ 589.2 KB │       56.59% │
 └───────┴─────────────┴─────────┴──────────┴──────────┴──────────────┘
 ```
+see detail [test/test.js](test/test.js)
 
 ## Changelogs
 
-* 1.0.2
-    * added new option compressor for custom compression
+- 1.0.3
+  - updated loader-utils/schema-utils to latest
 
-* 1.0.1
-    * added new feature for css-loader
+- 1.0.2
+  - added new option compressor for custom compression
+
+- 1.0.1
+  - added new feature for css-loader

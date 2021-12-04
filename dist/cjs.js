@@ -15,13 +15,18 @@ const defaultCompressors = {
 
 const loaderApi = function(source) {
 
-    const options = loaderUtils.getOptions(this);
+    //console.log('lz-loader start ...');
+    const options = this.getOptions();
+    //console.log(options);
+
     validate(schema, options, {
         name: 'LZ Loader',
         baseDataPath: 'options'
     });
     
-    const decompressPath = loaderUtils.stringifyRequest(this, require.resolve('./runtime/decompress.js'));
+    const request = require.resolve('./runtime/decompress.js');
+    const decompressPath = JSON.stringify(this.utils.contextify(this.context || this.rootContext, request));
+    //console.log(decompressPath);
 
     let compressor = options.compressor || 'common';
     if (typeof compressor === 'string') {

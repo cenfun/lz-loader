@@ -1,0 +1,91 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=0">
+    <title>test load</title>
+</head>
+
+<body>
+    <div class="p-2 css">
+        <h5>css (bootstrap):</h5>
+        <button type="button" class="btn btn-primary">Primary</button>
+        <button type="button" class="btn btn-secondary">Secondary</button>
+        <button type="button" class="btn btn-success">Success</button>
+        <button type="button" class="btn btn-danger">Danger</button>
+        <button type="button" class="btn btn-warning">Warning</button>
+        <button type="button" class="btn btn-info">Info</button>
+        <button type="button" class="btn btn-light">Light</button>
+        <button type="button" class="btn btn-dark">Dark</button>
+        <button type="button" class="btn btn-link">Link</button>
+        <div class="btn-group" role="group" aria-label="Basic example">
+            <button type="button" class="btn btn-primary">Left</button>
+            <button type="button" class="btn btn-primary">Middle</button>
+            <button type="button" class="btn btn-primary">Right</button>
+        </div>
+        <div class="spinner-border text-primary" role="status"></div>
+        <div class="spinner-border text-secondary" role="status"></div>
+        <div class="spinner-border text-success" role="status"></div>
+        <div class="spinner-border text-danger" role="status"></div>
+        <div class="spinner-border text-warning" role="status"></div>
+        <div class="spinner-border text-info" role="status"></div>
+        <div class="spinner-border text-light" role="status"></div>
+        <div class="spinner-border text-dark" role="status"></div>
+    </div>
+
+    <div class="p-2 json">
+        <h5>json (1000 length):</h5>
+    </div>
+    
+    <div class="p-2 svg">
+        <h5>svg (200 length):</h5>
+    </div>
+
+    <div class="p-2 text">
+        <h5>text (1000 length):</h5>
+    </div>
+
+    <script src="./dist/mixed-production-lz.js"></script>
+    <script>
+        const bundle = window['mixed-production-lz'];
+        console.log(bundle);
+
+        //================================================================
+        const divJson = document.createElement('div');
+        divJson.innerText = JSON.stringify(bundle.json).substr(0, 1000);
+        document.querySelector('.json').appendChild(divJson);
+
+        //================================================================
+        const svgContainer = document.querySelector('.svg');
+
+        const divSvg = document.createElement('div');
+        divSvg.innerText = bundle.svg.substr(0, 200);
+        svgContainer.appendChild(divSvg);
+
+        const icons = document.querySelector('.svg-icons');
+        //console.log(icons);
+        const symbols = icons.querySelectorAll('symbol');
+        const ns = 'http://www.w3.org/2000/svg';
+        for (let i = 0; i < 200; i++) {
+            const item = symbols[i];
+            const svg = document.createElementNS(ns, 'svg');
+            svg.setAttribute('width', 20);
+            svg.setAttribute('height', 20);
+            svg.setAttribute('class', 'm-1');
+            const use = document.createElementNS(ns, 'use');
+            use.setAttribute('href', `#${item.id}`);
+            svg.appendChild(use);
+            svgContainer.appendChild(svg);
+        }
+
+        //================================================================
+        const divText = document.createElement('div');
+        divText.innerText = bundle.text.substr(0, 1000);
+        document.querySelector('.text').appendChild(divText);
+
+    </script>
+</body>
+
+</html>

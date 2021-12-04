@@ -259,7 +259,7 @@ module.exports = {
     },
 
     'plugins': [
-        
+        'html'
     ],
 
     'extends': [
