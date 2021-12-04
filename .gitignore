@@ -1,8 +1,4 @@
 /node_modules
 /package-lock.json
 /test/.temp/
-/test/build/
-/test/node_modules/
 /test/dist
-/test/package-lock.json
-/.temp
