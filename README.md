@@ -141,7 +141,7 @@ see detail [test/test.js](test/test.js)
 ## Changelogs
 
 - 1.0.3
-  - updated loader-utils/schema-utils to latest
+  - updated schema-utils to latest
 
 - 1.0.2
   - added new option compressor for custom compression

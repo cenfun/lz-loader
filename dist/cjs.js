@@ -1,5 +1,3 @@
-
-const loaderUtils = require('loader-utils');
 const { validate } = require('schema-utils');
 const compress = require('./runtime/compress.js');
 const decompress = require('./runtime/decompress.js');
