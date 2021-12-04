@@ -5,7 +5,8 @@ const escodegen = require('escodegen');
 
 module.exports = function(source, compress, decompressPath, options) {
 
-    //console.log(source.substr(0, 1000));
+    // console.log('css before lz 1000 =================================================================');
+    // console.log(source.substr(0, 1000));
 
     const tree = esprima.parseModule(source);
 
@@ -44,7 +45,9 @@ module.exports = function(source, compress, decompressPath, options) {
 
     const out = `${importStr}${ls}decompress('${lzStr}')${rs}`;
 
-    //console.log(out.substr(0, 1000));
+    // console.log('css after lz 1000 =================================================================');
+    // console.log(out.substr(0, 1000));
+    // console.log('===================================================================================');
 
     return out;
 };

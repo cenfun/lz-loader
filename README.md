@@ -39,31 +39,7 @@ const str = require("!!lz-loader!./icons.svg");
 ```
 see [https://webpack.js.org/concepts/loaders/#inline](https://webpack.js.org/concepts/loaders/#inline)
 
-## Custom compressor function
-```js
-//webpack.config.js
-module.exports = {
-    module: {
-        rules: [{
-            test: /\.css$/,
-            use: [{
-                loader: "after-loader",
-            }, {
-                loader: "lz-loader",
-                options: {
-                    esModule: false,
-                    compressor: function(source, compress, decompressPath, options) {
-                        var newSource = yourHandler(source);
-                        return newSource;
-                    }
-                }
-            }, {
-                loader: "before-loader"
-            }]
-    }
-};
-```
-## Css compressor for css-loader 
+## Css compressor between css-loader and style-loader
 ```js
 //webpack.config.js
 module.exports = {
@@ -94,6 +70,30 @@ module.exports = {
 ```
 see [dist/compressors/css-loader.js](dist/compressors/css-loader.js)
 
+## Custom compressor function
+```js
+//webpack.config.js
+module.exports = {
+    module: {
+        rules: [{
+            test: /\.css$/,
+            use: [{
+                loader: "after-loader",
+            }, {
+                loader: "lz-loader",
+                options: {
+                    esModule: false,
+                    compressor: function(source, compress, decompressPath, options) {
+                        var newSource = yourHandler(source);
+                        return newSource;
+                    }
+                }
+            }, {
+                loader: "before-loader"
+            }]
+    }
+};
+```
 ## Compression cases
 * css: [test/src/case-css.js](test/src/case-css.js)
 * json: [test/src/case-json.js](test/src/case-json.js)
