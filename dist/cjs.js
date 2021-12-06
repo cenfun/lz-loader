@@ -1,6 +1,5 @@
 const { validate } = require('schema-utils');
-const compress = require('./runtime/compress.js');
-const decompress = require('./runtime/decompress.js');
+const compress = require('lz-utils/lib/compress.js');
 const schema = require('./options.json');
 
 const commonCompressor = require('./compressors/common.js');
@@ -36,7 +35,7 @@ const loaderApi = function(source) {
         baseDataPath: 'options'
     });
     
-    const request = require.resolve('./runtime/decompress.js');
+    const request = require.resolve('lz-utils/lib/decompress.js');
     const decompressPath = JSON.stringify(this.utils.contextify(this.context || this.rootContext, request));
     //console.log(decompressPath);
 
@@ -56,8 +55,5 @@ const loaderApi = function(source) {
 
     return compressor.call(this, source, compress, decompressPath, options);
 };
-
-loaderApi.compress = compress;
-loaderApi.decompress = decompress;
 
 module.exports = loaderApi;

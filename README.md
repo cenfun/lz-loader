@@ -140,6 +140,9 @@ see detail [test/test.js](test/test.js)
 
 ## Changelogs
 
+- 1.0.5
+  - updated lz-utils
+
 - 1.0.4
   - fixed issue for inline json
 
